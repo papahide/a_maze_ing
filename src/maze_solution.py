@@ -6,6 +6,10 @@ class MazeSolution:
     def __init__(self, maze_gen: MazeGenerator,
                  entry: tuple[int, int],
                  exit_point: tuple[int, int]) -> None:
+        """
+        Declaration of the magic method of the MazeSolution
+        class defines the attributes
+        """
         self.maze: list[list[int]] = maze_gen.maze
         self.entry: tuple[int, int] = entry
         self.exit: tuple[int, int] = exit_point
@@ -17,6 +21,10 @@ class MazeSolution:
                        self,
                        curr_cell: tuple[int, int]
                        ) -> list[tuple[int, int]]:
+        """
+        This method searches the adjacent cells
+        (that can be accessed) and returns them in a list
+        """
         x, y = curr_cell
         neighbours: list[tuple[int, int]] = []
         if not self.maze[y][x] & NORTH:
@@ -31,6 +39,10 @@ class MazeSolution:
 
     @staticmethod
     def get_direction(son: tuple[int, int], father: tuple[int, int]) -> str:
+        """
+        This static method returns the direction in witch the solution
+        path is moving in that specific cell
+        """
         sx, sy = son
         fx, fy = father
         if sx > fx:
@@ -43,6 +55,9 @@ class MazeSolution:
             return "S"
 
     def solve(self) -> None:
+        """
+        Main method to create the solution of the maze with the DFS algorithm
+        """
         queue: deque[tuple[int, int]] = deque()
         visited: set[tuple[int, int]] = set()
         came_from: dict[tuple[int, int], tuple[int, int]] = {}
