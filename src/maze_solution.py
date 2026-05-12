@@ -3,6 +3,10 @@ from collections import deque
 
 
 class MazeSolution:
+    """
+    Class containing the maze solution methods.
+    It uses the DFS algorithm
+    """
     def __init__(self, maze_gen: MazeGenerator,
                  entry: tuple[int, int],
                  exit_point: tuple[int, int]) -> None:
@@ -56,7 +60,15 @@ class MazeSolution:
 
     def solve(self) -> None:
         """
-        Main method to create the solution of the maze with the DFS algorithm
+        Main method to create the solution of the maze with the DFS algorithm:
+          - Create a queue using deque (uses queue.popleft,
+            faster than regular pop)
+          - Creates auxiliar variables, to store data
+            like: came_from[son] = father,
+            visited (visited cells)
+          - While the wue has data, it explores every possible path
+            in the maze.
+          - Stores the shorthest path between entry and exit points.
         """
         queue: deque[tuple[int, int]] = deque()
         visited: set[tuple[int, int]] = set()

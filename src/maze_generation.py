@@ -10,7 +10,15 @@ WEST = 0b1000
 
 
 class MazeGenerator():
+    """
+    Class that contains the maze generation methods.
+    It uses the BFS with backtracking algorithm.
+    """
     def __init__(self, conf: MazeConfig) -> None:
+        """
+        Constructor of the MazeGenerator that defines
+        all the attributes of the class.
+        """
         self.width: int = conf.width
         self.height: int = conf.height
         self.seed: int = conf.seed
@@ -22,15 +30,24 @@ class MazeGenerator():
                                           for _ in range(conf.height)]
 
     def maze_init(self) -> list[list[int]]:
+        """
+        Creates the start maze, with all closed cells.
+        """
         return [[0b1111 for _ in range(self.width)]
                 for _ in range(self.height)]
 
     def mark_visited_cell(self, curr_cell: tuple[int, int]) -> None:
+        """
+        Marks visited cells.
+        """
         x, y = curr_cell
         self.visited[y][x] = True
 
     def get_not_visited(self, curr_cell:
                         tuple[int, int]) -> list[tuple[int, int]]:
+        """
+        Returns the adjacent, not visited cells of a specific cell.
+        """
         not_visited: list[tuple[int, int]] = []
         x, y = curr_cell
         if x > 0 and not self.visited[y][x-1]:
@@ -45,6 +62,9 @@ class MazeGenerator():
 
     def remove_walls(self, curr_cell: tuple[int, int],
                      new_cell: tuple[int, int]) -> None:
+        """
+        Removes walls between two cells.
+        """
         x, y = curr_cell
         nx, ny = new_cell
         if x > nx:
@@ -62,6 +82,9 @@ class MazeGenerator():
 
     def restore_walls(self, curr_cell: tuple[int, int],
                       new_cell: tuple[int, int]) -> None:
+        """
+        Restores a wall between two specific ceells.
+        """
         x, y = curr_cell
         nx, ny = new_cell
         if x > nx:
@@ -78,6 +101,9 @@ class MazeGenerator():
             self.maze[ny][nx] |= SOUTH
 
     def dfs_backtracking(self, start: tuple[int, int]) -> None:
+        """
+        Main algorithm to create a perfct maze.
+        """
         stack: list[tuple[int, int]] = []
         stack.append(start)
         while stack:
@@ -94,6 +120,9 @@ class MazeGenerator():
                 stack.pop(-1)
 
     def get_walls(self) -> list[list[tuple[int, int]]]:
+        """
+        Returns all the walls from a perfect maze.
+        """
         walls: list[list[tuple[int, int]]] = []
         for y in range(self.height):
             for x in range(self.width):
@@ -104,6 +133,10 @@ class MazeGenerator():
         return walls
 
     def check_three_x_three(self, x: int, y: int) -> bool:
+        """
+        Checks if there is a 3x3 empty zone around a specific cell.
+        Returns a bool value.
+        """
         return all([
             self.maze[y-1][x-1] & EAST == 0,
             self.maze[y][x-1] & EAST == 0,
@@ -120,6 +153,9 @@ class MazeGenerator():
         ])
 
     def check_empty_zone(self) -> bool:
+        """
+        Checks if there is a 3x3 empty zone in a maze.
+        """
         for y in range(1, self.height - 1):
             for x in range(1, self.width - 1):
                 empty: bool = self.check_three_x_three(x, y)
@@ -128,6 +164,10 @@ class MazeGenerator():
         return False
 
     def make_maze_imperfect(self) -> None:
+        """
+        Tries to remove 15% of the walls of a perfect maze,
+        to create a imperfect maze with no 3x3 empty zone.
+        """
         walls: list[list[tuple[int, int]]] = self.get_walls()
         n_walls_to_remove: int = int(len(walls) * 0.15)
         random.shuffle(walls)
@@ -142,11 +182,14 @@ class MazeGenerator():
                 removed += 1
 
     def fill_cell(self, x: int, y: int) -> None:
+        """
+        Closes a cell.
+        """
         self.maze[y][x] = 0xF
 
     def put_center_pattern(self) -> None:
         """
-        Create the 42 center pattern
+        Create the 42 center pattern.
         """
         center: tuple[int, int] = (self.width // 2, self.height // 2)
         x, y = center
@@ -174,6 +217,14 @@ class MazeGenerator():
             self.fill_cell(cx, cy)
 
     def maze_gen(self) -> None:
+        """
+        Main maze generation function in a order:
+         1. Creates a full closed maze.
+         2. Makes that maze a perfet maze using dfs with
+            backtracking.
+         3. If requested, makes the maze imperfect.
+         4. If possible, creates the 42 center pattern.
+        """
         random.seed(self.seed)
         start: tuple[int, int] = self.entry
         self.mark_visited_cell(start)
