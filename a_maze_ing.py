@@ -18,8 +18,8 @@ def main() -> None:
     except errors.MazeConfigError as m_err:
         sys.stderr.write(str(m_err) + "\n")
         sys.exit(1)
-    print(str(conf))
-
+    maze = src.MazeGenerator(conf)
+    
 
 if __name__ == "__main__":
     main()

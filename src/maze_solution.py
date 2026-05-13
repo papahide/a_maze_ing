@@ -60,7 +60,7 @@ class MazeSolution:
 
     def solve(self) -> None:
         """
-        Main method to create the solution of the maze with the DFS algorithm:
+        Main method to create the solution of the maze with the BFS algorithm:
           - Create a queue using deque (uses queue.popleft,
             faster than regular pop)
           - Creates auxiliar variables, to store data
@@ -87,10 +87,11 @@ class MazeSolution:
                     cell = came_from[cell]
                 self.path.append(self.entry)
                 self.path.reverse()
+                self.directions = self.directions[::-1]
                 break
-            directions: list[tuple[int, int]] = self.get_neighbours(curr_cell)
-            for direction in directions:
-                if direction not in visited:
-                    visited.add(direction)
-                    came_from[direction] = curr_cell
-                    queue.append(direction)
+            neighbours: list[tuple[int, int]] = self.get_neighbours(curr_cell)
+            for neighbour in neighbours:
+                if neighbour not in visited:
+                    visited.add(neighbour)
+                    came_from[neighbour] = curr_cell
+                    queue.append(neighbour)

@@ -1,6 +1,7 @@
 from src.parser import MazeConfig
 import random
 import sys
+import errors
 
 
 NORTH = 0b0001
@@ -187,9 +188,9 @@ class MazeGenerator():
         """
         self.maze[y][x] = 0xF
 
-    def put_center_pattern(self) -> None:
+    def get_42_pattern(self) -> list[tuple[int, int]]:
         """
-        Create the 42 center pattern.
+        Gets cells for 42 pattern.
         """
         center: tuple[int, int] = (self.width // 2, self.height // 2)
         x, y = center
@@ -213,8 +214,25 @@ class MazeGenerator():
             (x+2, y+2),
             (x+3, y+2),
         ]
+        return cells
+
+    def put_center_pattern(self) -> None:
+        """
+        Create the 42 center pattern.
+        """
+        cells: list[tuple[int, int]] = self.get_42_pattern()
         for cx, cy in cells:
             self.fill_cell(cx, cy)
+
+    def validate_entry_not_in_42(self) -> None:
+        """
+        Validates that entry or exit points are not in 42 pattern.
+        """
+        pattern_cells: list[tuple[int, int]] = self.get_42_pattern()
+        for cell in pattern_cells:
+            if cell == self.entry or cell == self.exit:
+                raise errors.MazeGenError("Entry cannot be in 42 "
+                                          "central pttern")
 
     def maze_gen(self) -> None:
         """
@@ -232,6 +250,7 @@ class MazeGenerator():
         if not self.perfect:
             self.make_maze_imperfect()
         if self.width > 12 and self.height > 10:
+            self.validate_entry_not_in_42()
             self.put_center_pattern()
         else:
             sys.stderr.write("Maze too small for '42' pattern\n")
