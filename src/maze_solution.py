@@ -5,7 +5,7 @@ from collections import deque
 class MazeSolution:
     """
     Class containing the maze solution methods.
-    It uses the DFS algorithm
+    It uses the BFS algorithm
     """
     def __init__(self, maze_gen: MazeGenerator,
                  entry: tuple[int, int],

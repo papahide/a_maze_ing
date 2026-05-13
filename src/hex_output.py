@@ -61,12 +61,8 @@ class HexOutput:
         the data in the output file.
         """
         with open(self.output_file, "w") as file:
-            maze_txt: str = self.hex_maze()
-            file.write(maze_txt)
+            file.write(self.hex_maze())
             file.write("\n")
-            entry_txt: str = f"{self.entry[0],self.entry[1]}"
-            file.write((entry_txt) + "\n")
-            exit_txt: str = f"{self.exit[0],self.exit[1]}"
-            file.write((exit_txt) + "\n")
-            solution_txt: str = self.solution
-            file.write((solution_txt) + "\n")
+            file.write(f"{self.entry[0]},{self.entry[1]}\n")
+            file.write(f"{self.exit[0]},{self.exit[1]}\n")
+            file.write(f"{self.solution}\n")

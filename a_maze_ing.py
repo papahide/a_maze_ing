@@ -19,7 +19,12 @@ def main() -> None:
         sys.stderr.write(str(m_err) + "\n")
         sys.exit(1)
     maze = src.MazeGenerator(conf)
-    
+    maze.maze_gen()
+    solution = src.MazeSolution(maze, conf.entry_point, conf.exit_point)
+    solution.solve()
+    output = src.HexOutput(maze, maze.entry, maze.exit, solution.directions, conf)
+    output.hex_output()
+
 
 if __name__ == "__main__":
     main()
