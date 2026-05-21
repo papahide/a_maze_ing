@@ -3,5 +3,6 @@ from .parser import MazeConfig
 from .maze_generation import MazeGenerator
 from .maze_solution import MazeSolution
 from .hex_output import HexOutput
+from .maze_render import MazeRender
 
-__all__ = ["MazeParsing", "MazeConfig", "MazeGenerator", "MazeSolution", "HexOutput"]
+__all__ = ["MazeParsing", "MazeConfig", "MazeGenerator", "MazeSolution", "HexOutput", "MazeRender"]

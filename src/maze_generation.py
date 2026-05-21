@@ -13,7 +13,7 @@ WEST = 0b1000
 class MazeGenerator():
     """
     Class that contains the maze generation methods.
-    It uses the BFS with backtracking algorithm.
+    It uses the DFS with backtracking algorithm.
     """
     def __init__(self, conf: MazeConfig) -> None:
         """
@@ -27,6 +27,7 @@ class MazeGenerator():
         self.entry: tuple[int, int] = conf.entry_point
         self.exit: tuple[int, int] = conf.exit_point
         self.maze: list[list[int]] = self.maze_init()
+        self.fortytwo: list[tuple[int, int]] | None = None
         self.visited: list[list[bool]] = [[False for _ in range(conf.width)]
                                           for _ in range(conf.height)]
 
@@ -125,11 +126,18 @@ class MazeGenerator():
         Returns all the walls from a perfect maze.
         """
         walls: list[list[tuple[int, int]]] = []
+        forty_two: set[tuple[int, int]] | None = set(self.fortytwo) if self.fortytwo else None
         for y in range(self.height):
             for x in range(self.width):
+                if forty_two and (x, y) in forty_two:
+                    continue
                 if x < self.width - 1 and self.maze[y][x] & EAST:
+                    if forty_two and (x + 1, y) in forty_two:
+                        continue
                     walls.append([(x, y), (x+1, y)])
                 if y < self.height - 1 and self.maze[y][x] & SOUTH:
+                    if forty_two and (x, y + 1) in forty_two:
+                        continue
                     walls.append([(x, y), (x, y+1)])
         return walls
 
@@ -184,9 +192,18 @@ class MazeGenerator():
 
     def fill_cell(self, x: int, y: int) -> None:
         """
-        Closes a cell.
+        Closes a cell and adjacent cells.
         """
         self.maze[y][x] = 0xF
+        if y > 0:
+            self.maze[y - 1][x] |= SOUTH
+        if y < self.height - 1:
+            self.maze[y + 1][x] |= NORTH
+        if x > 0:
+            self.maze[y][x - 1] |= EAST
+        if x < self.width - 1:
+            self.maze[y][x + 1] |= WEST
+
 
     def get_42_pattern(self) -> list[tuple[int, int]]:
         """
@@ -245,12 +262,16 @@ class MazeGenerator():
         """
         random.seed(self.seed)
         start: tuple[int, int] = self.entry
-        self.mark_visited_cell(start)
-        self.dfs_backtracking(start)
-        if not self.perfect:
-            self.make_maze_imperfect()
         if self.width > 12 and self.height > 10:
             self.validate_entry_not_in_42()
-            self.put_center_pattern()
+            self.fortytwo = self.get_42_pattern()
+            for cell in self.fortytwo:
+                self.mark_visited_cell(cell)
         else:
             sys.stderr.write("Maze too small for '42' pattern\n")
+        self.mark_visited_cell(start)
+        self.dfs_backtracking(start)
+        if self.fortytwo:
+            self.put_center_pattern()
+        if not self.perfect:
+            self.make_maze_imperfect()
