@@ -126,7 +126,9 @@ class MazeGenerator():
         Returns all the walls from a perfect maze.
         """
         walls: list[list[tuple[int, int]]] = []
-        forty_two: set[tuple[int, int]] | None = set(self.fortytwo) if self.fortytwo else None
+        forty_two: set[tuple[int, int]] | None = (
+            set(self.fortytwo) if self.fortytwo else None
+        )
         for y in range(self.height):
             for x in range(self.width):
                 if forty_two and (x, y) in forty_two:

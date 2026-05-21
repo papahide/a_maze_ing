@@ -16,7 +16,9 @@ class MazeRender():
         self.entry: tuple[int, int] = conf.entry_point
         self.exit: tuple[int, int] = conf.exit_point
         self.solution: set[tuple[int, int]] = set(sol.path)
-        self.forty_two: set[tuple[int, int]] | None = set(the_maze.fortytwo) if the_maze.fortytwo else None
+        self.forty_two: set[tuple[int, int]] | None = (
+            set(the_maze.fortytwo) if the_maze.fortytwo else None
+        )
         self.maze_str: str = ""
         self.hide_solution: bool = sol_hide
         if maze_theme:
@@ -40,8 +42,15 @@ class MazeRender():
         else:
             return "  "
 
-    def wall_content(self, curr_cell: tuple[int, int], last_cell: tuple[int, int]) -> str:
-        if not self.hide_solution and curr_cell in self.solution and last_cell in self.solution:
+    def wall_content(
+        self, curr_cell: tuple[int, int],
+        last_cell: tuple[int, int]
+    ) -> str:
+        if (
+            not self.hide_solution
+            and curr_cell in self.solution
+            and last_cell in self.solution
+        ):
             return self.theme["path"]
         else:
             return "  "
@@ -50,7 +59,11 @@ class MazeRender():
         top: str = ""
         for x in range(self.width):
             top += self.theme["wall"]
-            if self.forty_two and (x, y) in self.forty_two and (x, y - 1) in self.forty_two:
+            if (
+                self.forty_two
+                and (x, y) in self.forty_two
+                and (x, y - 1) in self.forty_two
+            ):
                 top += self.theme["fortytwo"]
             elif self.maze[y][x] & NORTH:
                 top += self.theme["wall"]
@@ -62,7 +75,11 @@ class MazeRender():
     def mid_lane(self, y: int) -> str:
         mid: str = ""
         for x in range(self.width):
-            if self.forty_two and (x, y) in self.forty_two and (x-1, y) in self.forty_two:
+            if (
+                self.forty_two
+                and (x, y) in self.forty_two
+                and (x-1, y) in self.forty_two
+            ):
                 mid += self.theme["fortytwo"]
             elif self.maze[y][x] & WEST:
                 mid += self.theme["wall"]

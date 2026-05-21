@@ -77,7 +77,9 @@ class UserInteractions():
                 for i, emoji in enumerate(big_char):
                     print(f"  {i + 1} -> {emoji}")
                 try:
-                    path_char: int = int(input("Choose a character to draw the solution path: ")) - 1
+                    path_char: int = int(
+                        input("Choose a character to draw the solution path: ")
+                    ) - 1
                 except Exception as err:
                     sys.stderr.write(f"Input error: {err}\n")
                     continue
@@ -85,7 +87,8 @@ class UserInteractions():
                 if path_char >= 0 and path_char <= len(big_char):
                     break
                 else:
-                    raise MazeGenError(f"{path_char} is not a valid emoji, try again")
+                    raise MazeGenError(f"{path_char} is not a valid emoji, "
+                                       f"try again")
             elif man_or_rand == 2:
                 path_char: int = randint(0, len(big_char) - 1)
                 self.maze_theme["path"] = big_char[path_char]

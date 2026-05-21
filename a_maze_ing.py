@@ -25,15 +25,14 @@ def main() -> None:
         sys.exit(1)
     maze = src.MazeGenerator(conf)
     maze.maze_gen()
-    solution = src.MazeSolution(maze, conf.entry_point,
-                                conf.exit_point)
-    solution.solve()
+    sol = src.MazeSolution(maze, conf.entry_point, conf.exit_point)
+    sol.solve()
     output = src.HexOutput(maze, maze.entry, maze.exit,
-                           solution.directions, conf)
+                           sol.directions, conf)
     output.hex_output()
-    maze_display = src.MazeRender(maze, conf, solution)
+    maze_display = src.MazeRender(maze, conf, sol)
     maze_display.display()
-    interaction: src.UserInteractions = src.UserInteractions(conf, maze, solution)
+    interaction: src.UserInteractions = src.UserInteractions(conf, maze, sol)
     while True:
         print("\n=== A_MAZE_ING ===")
         print("1 --> Regenerate maze")
