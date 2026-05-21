@@ -1,11 +1,6 @@
 import sys
 import src
 import errors
-# import curses
-
-
-def get_interaction(decision: int) -> None:
-    pass
 
 
 def get_parsed_configuration(conf_file: str) -> src.MazeConfig:
@@ -14,19 +9,6 @@ def get_parsed_configuration(conf_file: str) -> src.MazeConfig:
         conf: src.MazeConfig = parser.config_parse(conf_content,
                                                    str(sys.argv[1]))
         return conf
-
-
-def display_default_maze(conf: src.MazeConfig) -> None:
-    maze = src.MazeGenerator(conf)
-    solution = src.MazeSolution(maze, conf.entry_point,
-                                conf.exit_point)
-    output = src.HexOutput(maze, maze.entry, maze.exit,
-                           solution.directions, conf)
-    maze.maze_gen()
-    solution.solve()
-    output.hex_output()
-    maze_display = src.MazeRender(maze, conf, solution)
-    maze_display.display()
 
 
 def main() -> None:
@@ -41,18 +23,35 @@ def main() -> None:
     except errors.MazeConfigError as m_err:
         sys.stderr.write(str(m_err) + "\n")
         sys.exit(1)
-    display_default_maze(conf)
-    # while True:
-    #     print("\n=== A_MAZE_ING ===")
-    #     print("r --> Regenerate maze")
-    #     print("p --> Show/Hide path from entry to exit")
-    #     print("c --> Change maze colors")
-    #     print("e --> Custom path")
-    #     print("q --> Quit")
-    #     decision: int = int(input("Chouse a option: "))
-    #     if decision == 5:
-    #         break
-    #     get_interaction(decision)
+    maze = src.MazeGenerator(conf)
+    maze.maze_gen()
+    solution = src.MazeSolution(maze, conf.entry_point,
+                                conf.exit_point)
+    solution.solve()
+    output = src.HexOutput(maze, maze.entry, maze.exit,
+                           solution.directions, conf)
+    output.hex_output()
+    maze_display = src.MazeRender(maze, conf, solution)
+    maze_display.display()
+    interaction: src.UserInteractions = src.UserInteractions(conf, maze, solution)
+    while True:
+        print("\n=== A_MAZE_ING ===")
+        print("1 --> Regenerate maze")
+        print("2 --> Show/Hide path from entry to exit")
+        print("3 --> Change maze colors")
+        print("4 --> Custom path")
+        print("5 --> Quit")
+        try:
+            decision: int = int(input("Choose a option: "))
+        except ValueError as err:
+            sys.stderr.write(f"Input error: {err}\n")
+            continue
+        if decision == 5:
+            break
+        try:
+            interaction.handle_interactions(decision)
+        except errors.MazeGenError as err:
+            sys.stderr.write(str(err) + "\n")
 
 
 if __name__ == "__main__":

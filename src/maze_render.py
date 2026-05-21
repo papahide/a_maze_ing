@@ -1,5 +1,6 @@
 from .maze_generation import MazeGenerator, MazeConfig, NORTH, WEST
 from .maze_solution import MazeSolution
+from PIL import Image, ImageDraw
 
 
 class MazeRender():
@@ -7,7 +8,7 @@ class MazeRender():
                  conf: MazeConfig,
                  sol: MazeSolution,
                  maze_theme: dict[str, str] | None = None,
-                 sol_hide: bool = False
+                 sol_hide: bool = True
                  ) -> None:
         self.maze: list[list[int]] = the_maze.maze
         self.height: int = conf.height
@@ -83,6 +84,13 @@ class MazeRender():
             self.maze_str += self.top_line(y) + "\n"
             self.maze_str += self.mid_lane(y) + "\n"
         self.maze_str += self.bottom_line()
+
+    def image_output(self) -> None:
+        self.render()
+        img = Image.new("RGB", (800, 600), "black")
+        draw = ImageDraw.Draw(img)
+        draw.text((10, 10), self.maze_str, fill="white")
+        img.save("maze.png")
 
     def display(self) -> None:
         self.render()
