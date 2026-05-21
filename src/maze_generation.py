@@ -204,7 +204,6 @@ class MazeGenerator():
         if x < self.width - 1:
             self.maze[y][x + 1] |= WEST
 
-
     def get_42_pattern(self) -> list[tuple[int, int]]:
         """
         Gets cells for 42 pattern.

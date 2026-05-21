@@ -39,7 +39,7 @@ class MazeRender():
             return self.theme["fortytwo"]
         else:
             return "  "
-        
+
     def wall_content(self, curr_cell: tuple[int, int], last_cell: tuple[int, int]) -> str:
         if not self.hide_solution and curr_cell in self.solution and last_cell in self.solution:
             return self.theme["path"]
@@ -68,7 +68,7 @@ class MazeRender():
                 mid += self.theme["wall"]
             else:
                 mid += self.wall_content((x, y), (x - 1, y))
-            mid += self.cell_content(cell=(x,y))
+            mid += self.cell_content(cell=(x, y))
         mid += self.theme["wall"]
         return mid
 

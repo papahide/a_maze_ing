@@ -1,6 +1,7 @@
 from src.maze_generation import MazeGenerator, NORTH, EAST, WEST, SOUTH
 from src.parser import MazeConfig
 
+
 class HexOutput:
     """
     Class that contains the methods that converts

@@ -33,10 +33,10 @@ class UserInteractions():
         self.maze = MazeGenerator(regen_conf)
         self.maze.maze_gen()
         self.solution = MazeSolution(self.maze, regen_conf.entry_point,
-                                    regen_conf.exit_point)
+                                     regen_conf.exit_point)
         self.solution.solve()
         output = HexOutput(self.maze, self.maze.entry, self.maze.exit,
-                            self.solution.directions, regen_conf)
+                           self.solution.directions, regen_conf)
         output.hex_output()
         maze_display = MazeRender(self.maze, regen_conf, self.solution,
                                   self.maze_theme, self.path_hide)
@@ -46,10 +46,9 @@ class UserInteractions():
         self.path_hide = not self.path_hide
         self._regen_maze(False)
 
-
     def _rerender(self) -> None:
         maze_display = MazeRender(self.maze, self.maze_conf, self.solution,
-                                self.maze_theme, self.path_hide)
+                                  self.maze_theme, self.path_hide)
         maze_display.display()
 
     def _maze_colors(self) -> None:
@@ -63,18 +62,18 @@ class UserInteractions():
                                "🐑", "🦕", "🐉", "👾", "💀",
                                "👑", "⚡", "🌈", "🍀", "🎯",
                                "🚀", "🧩", "🎲", "🪐", "🛸",
-                               "🧠","👁️", "🎮"]
+                               "🧠", "👁️", "🎮"]
         while True:
             print("  1 -> Choose a emoji"
-                  "\n  2 -> Random path emoji" \
-                  "\n  3 -> Default path theme" \
+                  "\n  2 -> Random path emoji"
+                  "\n  3 -> Default path theme"
                   "\n  4 -> Return")
             try:
                 man_or_rand: int = int(input("  Choose a option: "))
             except Exception as err:
                 sys.stderr.write(f"Input error: {err}\n")
                 continue
-            if man_or_rand  == 1:
+            if man_or_rand == 1:
                 for i, emoji in enumerate(big_char):
                     print(f"  {i + 1} -> {emoji}")
                 try:
@@ -97,7 +96,7 @@ class UserInteractions():
             elif man_or_rand == 4:
                 return
             else:
-                print(f"Select a valid option, try again")
+                print("Select a valid option, try again")
         self._rerender()
 
     def handle_interactions(self, decision: int) -> None:

@@ -4,11 +4,11 @@ import errors
 
 
 def get_parsed_configuration(conf_file: str) -> src.MazeConfig:
-        parser: src.MazeParsing = src.MazeParsing()
-        conf_content: str = parser.conf_read(conf_file)
-        conf: src.MazeConfig = parser.config_parse(conf_content,
-                                                   str(sys.argv[1]))
-        return conf
+    parser: src.MazeParsing = src.MazeParsing()
+    conf_content: str = parser.conf_read(conf_file)
+    conf: src.MazeConfig = parser.config_parse(conf_content,
+                                               str(sys.argv[1]))
+    return conf
 
 
 def main() -> None:
