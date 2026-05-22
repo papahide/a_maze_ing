@@ -1,15 +1,22 @@
-from .maze_generation import MazeGenerator, MazeConfig, NORTH, WEST
+from .maze_generation import MazeGenerator, NORTH, WEST
+from .parser import MazeConfig
 from .maze_solution import MazeSolution
-from PIL import Image, ImageDraw
 
 
 class MazeRender():
+    """
+    Class dedicated to render the maze and display
+    it on the terminal.
+    """
     def __init__(self, the_maze: MazeGenerator,
                  conf: MazeConfig,
                  sol: MazeSolution,
                  maze_theme: dict[str, str] | None = None,
                  sol_hide: bool = True
                  ) -> None:
+        """
+        Attributes for the MazeRender class.
+        """
         self.maze: list[list[int]] = the_maze.maze
         self.height: int = conf.height
         self.width: int = conf.width
@@ -24,13 +31,16 @@ class MazeRender():
         if maze_theme:
             self.theme: dict[str, str] = maze_theme
         else:
-            self.theme: dict[str, str] = {"wall": "██",
-                                          "path": "\033[32m██\033[0m",
-                                          "entry": "\033[33m██\033[0m",
-                                          "exit": "\033[31m██\033[0m",
-                                          "fortytwo": "\033[34m██\033[0m"}
+            self.theme = {"wall": "██",
+                          "path": "\033[32m██\033[0m",
+                          "entry": "\033[33m██\033[0m",
+                          "exit": "\033[31m██\033[0m",
+                          "fortytwo": "\033[34m██\033[0m"}
 
     def cell_content(self, cell: tuple[int, int]) -> str:
+        """
+        Returns the correct content to print in a specific position.
+        """
         if cell == self.entry:
             return self.theme["entry"]
         elif cell == self.exit:
@@ -46,6 +56,10 @@ class MazeRender():
         self, curr_cell: tuple[int, int],
         last_cell: tuple[int, int]
     ) -> str:
+        """
+        Returns the correct content to print in a
+        specific position of a wall.
+        """
         if (
             not self.hide_solution
             and curr_cell in self.solution
@@ -56,6 +70,10 @@ class MazeRender():
             return "  "
 
     def top_line(self, y: int) -> str:
+        """
+        Method that creates a string of the top
+        layer to every line of cells.
+        """
         top: str = ""
         for x in range(self.width):
             top += self.theme["wall"]
@@ -73,6 +91,10 @@ class MazeRender():
         return top
 
     def mid_lane(self, y: int) -> str:
+        """
+        Returns the full content of the middle part of
+        a complete line of cells.
+        """
         mid: str = ""
         for x in range(self.width):
             if (
@@ -90,6 +112,9 @@ class MazeRender():
         return mid
 
     def bottom_line(self) -> str:
+        """
+        Returns the content to print of the bottom wall of the maze.
+        """
         bot: str = ""
         for _ in range(self.width):
             bot += str(self.theme["wall"] + self.theme["wall"])
@@ -97,18 +122,22 @@ class MazeRender():
         return bot
 
     def render(self) -> None:
+        """
+        Adds to the maze_str attribute (complete maze to print) all
+        the parts needed to print the maze:
+        Complete cell:
+                               Top line ->  ██████
+                            Middle line ->  ██  ██
+             Top line of the South cell ->  ██████
+        """
         for y in range(self.height):
             self.maze_str += self.top_line(y) + "\n"
             self.maze_str += self.mid_lane(y) + "\n"
         self.maze_str += self.bottom_line()
 
-    def image_output(self) -> None:
-        self.render()
-        img = Image.new("RGB", (800, 600), "black")
-        draw = ImageDraw.Draw(img)
-        draw.text((10, 10), self.maze_str, fill="white")
-        img.save("maze.png")
-
     def display(self) -> None:
+        """
+        Main function that prints the maze in the terminal.
+        """
         self.render()
         print(self.maze_str)

@@ -1,0 +1,24 @@
+[project]
+name = "a-maze-ing"
+version = "1.0.0"
+requires-python = ">=3.10"
+dependencies = [
+    "Pillow",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mazegen.py"]
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.flake8]
+max-line-length = 79

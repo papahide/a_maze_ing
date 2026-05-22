@@ -19,7 +19,7 @@ class MazeConfig:
     perfect: bool
     seed: int
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """
         Performs additional validation after creating the object.
 
@@ -190,10 +190,8 @@ class MazeParsing:
         height: int = self._parse_int(raw_config["HEIGHT"], 3, 9999)
         entry_point: tuple[int, int] = self._parse_coord(raw_config["ENTRY"],
                                                          width, height)
-        # self._validate_border(entry_point, width, height, "ENTRY")
         exit_point: tuple[int, int] = self._parse_coord(raw_config["EXIT"],
                                                         width, height)
-        # self._validate_border(exit_point, width, height, "EXIT")
         output_file: str = self._parse_output_file(raw_config["OUTPUT_FILE"],
                                                    config_name)
         perfect: bool = self._parse_bool(raw_config["PERFECT"])
