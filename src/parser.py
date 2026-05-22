@@ -78,6 +78,9 @@ class MazeParsing:
         This function parses the configuration file removing leaps and
         returns a dictionary with [Key]:[Value].
         """
+        required: list[str] = ["WIDTH", "HEIGHT",
+                               "ENTRY", "EXIT",
+                               "OUTPUT_FILE", "PERFECT"]
         lines: list[str] = [
             line.strip() for line in content.strip().split("\n")
             if line.strip() and not line.strip().startswith("#")
@@ -90,6 +93,9 @@ class MazeParsing:
                 raise MazeConfigError(f"Invalid format in line: {line}"
                                       "Usage: [Key]=[value]")
             key, value = line.split("=", 1)
+            if key not in required:
+                raise MazeConfigError(f"{key} not a valid configuration "
+                                      f"parameter.")
             if key in raw_config:
                 raise MazeConfigError(f"Duplicate key found: {key}")
             raw_config[key] = value

@@ -20,8 +20,8 @@ def main() -> None:
         sys.exit(1)
     try:
         conf: src.MazeConfig = get_parsed_configuration(sys.argv[1])
-    except errors.MazeConfigError as m_err:
-        sys.stderr.write(str(m_err) + "\n")
+    except errors.MazeConfigError as err:
+        sys.stderr.write(str(err) + "\n")
         sys.exit(1)
     maze = src.MazeGenerator(conf)
     maze.maze_gen()

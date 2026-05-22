@@ -116,7 +116,7 @@ If `PERFECT=False`, a random 15% of interior walls are then removed while ensuri
 
 ## Visualization
 
-The program displays the maze in a graphical window using **MiniLibX**. The entry is highlighted in magenta and the exit in red.
+The program displays the maze in a graphical window using **ASCII rendering**. The entry is highlighted in magenta and the exit in red.
 
 Available interactions:
 
@@ -226,19 +226,10 @@ All project code was written, reviewed and fully understood by the team members.
 
 | Login | Main responsibility |
 |-------|---------------------|
-| `<paapahid>` | \<role description\> |
-| `<clalfons>` | \<role description\> |
-
-### Planning
-
-> \<Briefly describe how you organised yourselves: initial tasks, how the plan evolved, and any changes from what was originally planned.\>
-
-### What went well and what we would improve
-
-> \<What worked well (task split, chosen algorithm, etc.) and what you would do differently.\>
+| `<paapahid>` | \<programmer\> |
+| `<clalfons>` | \<programmer\> |
 
 ### Tools used
 
 - Git / GitHub for version control
 - Claude (Anthropic) for documentation
-- \<Any other tools you used\>

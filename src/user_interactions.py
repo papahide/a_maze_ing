@@ -80,9 +80,9 @@ class UserInteractions():
         """
         themes: list[dict[str, str]] = color.get_theme_options()
         for i, theme in enumerate(themes):
-            print("-- NAME: WALL - PATH - CENTRAL PATTERN --")
-            print(f" {i + 1} -> {theme["name"]} : {theme["wall"]} - "
-                  f"{theme["path"]} - {theme["fortytwo"]}")
+            print("  -- NAME: WALL - PATH - CENTRAL PATTERN --")
+            print(f'  {i + 1} -> {theme["name"]} : {theme["wall"]} - '
+                  f'{theme["path"]} - {theme["fortytwo"]}')
         try:
             th_choice: int = int(input("  Choose a theme: ")) - 1
         except ValueError as err:

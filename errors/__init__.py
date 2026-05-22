@@ -1,5 +1,4 @@
-from .errors import MazeConfigError
-from .errors import MazeGenError
+from .errors import MazeConfigError, MazeGenError
 
 
 __all__ = ["MazeConfigError", "MazeGenError"]

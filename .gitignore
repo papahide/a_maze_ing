@@ -1,6 +1,5 @@
 __pycache__/
 .mypy_cache/
 .DS_Store
-conf.txt
-first_steps.txt
-en.subject-a_maze_ing.txt
+.venv/
+uv.lock

@@ -2,6 +2,8 @@ PYTHON  = python3
 MAIN    = a_maze_ing.py
 CONFIG  = configuration.txt
 UV      = uv
+PIP		= pip
+SRC		= source
 
 .PHONY: install run debug lint lint-strict build-pkg clean
 
@@ -18,20 +20,21 @@ debug:
 	$(UV) run $(PYTHON) -m pdb $(MAIN) $(CONFIG)
 
 lint:
-	$(UV) run flake8 .
+
+	$(UV) run flake8 . --exclude=.venv
 	$(UV) run mypy . --warn-return-any --warn-unused-ignores \
 	                 --ignore-missing-imports \
 	                 --disallow-untyped-defs \
 	                 --check-untyped-defs
 
 lint-strict:
-	$(UV) run flake8 .
+	$(UV) run flake8 . --exclude=.venv
 	$(UV) run mypy . --strict
 
 build-pkg:
 	@echo "Building mazegen package..."
 	$(UV) build --out-dir .
-	@echo "Package built."
+	@echo "Done. mazegen-*.whl and mazegen-*.tar.gz ready at root."
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
