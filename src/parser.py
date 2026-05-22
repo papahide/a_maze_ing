@@ -80,7 +80,7 @@ class MazeParsing:
         """
         required: list[str] = ["WIDTH", "HEIGHT",
                                "ENTRY", "EXIT",
-                               "OUTPUT_FILE", "PERFECT"]
+                               "OUTPUT_FILE", "PERFECT", "SEED"]
         lines: list[str] = [
             line.strip() for line in content.strip().split("\n")
             if line.strip() and not line.strip().startswith("#")

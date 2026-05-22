@@ -242,15 +242,15 @@ class MazeGenerator():
         for cx, cy in cells:
             self.fill_cell(cx, cy)
 
-    def validate_entry_not_in_42(self) -> None:
+    def validate_coords_not_in_42(self) -> None:
         """
         Validates that entry or exit points are not in 42 pattern.
         """
         pattern_cells: list[tuple[int, int]] = self.get_42_pattern()
         for cell in pattern_cells:
             if cell == self.entry or cell == self.exit:
-                raise errors.MazeGenError("Entry cannot be in 42 "
-                                          "central pttern")
+                raise errors.MazeGenError("Entry/Exit coords cannot "
+                                          "be in 42 central pttern")
 
     def maze_gen(self) -> None:
         """
@@ -264,7 +264,11 @@ class MazeGenerator():
         random.seed(self.seed)
         start: tuple[int, int] = self.entry
         if self.width > 12 and self.height > 10:
-            self.validate_entry_not_in_42()
+            try:
+                self.validate_coords_not_in_42()
+            except errors.MazeGenError as err:
+                sys.stderr.write(f"Maze generation error: {err}")
+                exit(1)
             self.fortytwo = self.get_42_pattern()
             for cell in self.fortytwo:
                 self.mark_visited_cell(cell)
